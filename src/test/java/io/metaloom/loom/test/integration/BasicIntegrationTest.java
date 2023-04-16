@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.metaloom.loom.api.Loom;
+import io.metaloom.loom.api.options.DatabaseOptions;
 import io.metaloom.loom.api.options.LoomOptions;
 import io.metaloom.loom.cortex.cli.LoomCortexCLI;
 import io.metaloom.loom.test.LoomProviderExtension;
@@ -18,7 +19,8 @@ public class BasicIntegrationTest {
 	@Test
 	public void testIntegration() throws Exception {
 		LoomOptions options = new LoomOptions();
-		options.setDatabase(provider.options());
+		DatabaseOptions dbOptions = LoomExtensionHelper.toOptions(provider.db());
+		options.setDatabase(dbOptions);
 
 		Loom loom = Loom.create(options);
 		loom.run(false);
