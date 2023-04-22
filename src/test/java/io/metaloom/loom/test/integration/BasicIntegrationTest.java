@@ -1,6 +1,6 @@
 package io.metaloom.loom.test.integration;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.metaloom.loom.api.Loom;
