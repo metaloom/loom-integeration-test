@@ -6,7 +6,7 @@ import io.metaloom.loom.api.Loom;
 import io.metaloom.loom.client.http.LoomHttpClient;
 import io.metaloom.loom.rest.model.asset.AssetListResponse;
 import io.metaloom.loom.test.TestEnvHelper;
-import io.metaloom.loom.test.Testdata;
+import io.metaloom.loom.test.data.TestDataCollection;
 
 public class BasicIntegrationTest extends AbstractIntegrationTest {
 
@@ -17,12 +17,13 @@ public class BasicIntegrationTest extends AbstractIntegrationTest {
 		server.run(false);
 
 		// 2. Setup fresh test data
-		Testdata data = TestEnvHelper.prepareTestdata("integration-test");
-		String path = data.root().getAbsolutePath();
+		TestDataCollection data = TestEnvHelper.prepareTestdata("integration-test");
+		String path = data.root().toAbsolutePath().toString();
 
 		// 3. Invoke the CLI
-		loomCortex("p",  "analyze", path);
+		cortex("p", "analyze", path);
 
+		// 4. Use the REST client to assert that the assets have been stored
 		try (LoomHttpClient client = httpClient(server)) {
 			loginAdmin(client);
 			AssetListResponse assets = client.listAssets().sync();
@@ -30,7 +31,5 @@ public class BasicIntegrationTest extends AbstractIntegrationTest {
 		}
 		server.shutdown();
 	}
-
-	
 
 }

@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import io.metaloom.cortex.cli.CortexCLIMain;
 import io.metaloom.loom.api.Loom;
 import io.metaloom.loom.api.options.DatabaseOptions;
 import io.metaloom.loom.api.options.LoomOptions;
 import io.metaloom.loom.client.http.LoomHttpClient;
 import io.metaloom.loom.client.http.impl.HttpErrorException;
-import io.metaloom.loom.cortex.cli.LoomCortexCLI;
 import io.metaloom.loom.rest.model.auth.AuthLoginResponse;
 import io.metaloom.loom.test.LoomProviderExtension;
 
@@ -41,12 +41,12 @@ public abstract class AbstractIntegrationTest {
 		return options;
 	}
 	
-	protected int loomCortex(String... args) {
+	protected int cortex(String... args) {
 		List<String> list = new ArrayList<>();
 		list.addAll(Arrays.asList("--hostname", "localhost", "--port", String.valueOf(loomOptions().getServer().getGrpcPort())));
 		list.addAll(Arrays.asList(args));
 		String[] array = list.toArray(new String[0]);
-		return LoomCortexCLI.execute(array);
+		return CortexCLIMain.execute(null, array);
 	}
 
 	protected Loom loomServer() {
