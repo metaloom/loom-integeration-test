@@ -41,11 +41,13 @@
       <artifactId>loom-container-server</artifactId>
       <version>${loom.nexus.version}</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>io.metaloom.loom.client</groupId>
       <artifactId>loom-client-grpc</artifactId>
       <version>${loom.client.version}</version>
     </dependency>
+    -->
     <dependency>
       <groupId>io.metaloom.loom.client</groupId>
       <artifactId>loom-client-rest</artifactId>
