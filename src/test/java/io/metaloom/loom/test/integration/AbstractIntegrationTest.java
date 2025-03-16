@@ -1,5 +1,6 @@
 package io.metaloom.loom.test.integration;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import io.metaloom.cortex.cli.CortexCLIMain;
 import io.metaloom.loom.api.Loom;
 import io.metaloom.loom.api.options.DatabaseOptions;
 import io.metaloom.loom.api.options.LoomOptions;
+import io.metaloom.loom.api.options.LoomOptionsLookup;
 import io.metaloom.loom.client.common.LoomClientException;
 import io.metaloom.loom.client.http.LoomHttpClient;
 import io.metaloom.loom.rest.model.auth.AuthLoginResponse;
@@ -25,7 +27,7 @@ public abstract class AbstractIntegrationTest {
 		AuthLoginResponse loginResponse = client.login("admin", "finger").sync();
 		client.setToken(loginResponse.getToken());
 	}
-	
+
 	protected LoomHttpClient httpClient(Loom server) {
 		return LoomHttpClient.builder()
 			.setHostname("localhost")
@@ -40,7 +42,7 @@ public abstract class AbstractIntegrationTest {
 		options.setDatabase(dbOptions);
 		return options;
 	}
-	
+
 	protected int cortex(String... args) {
 		List<String> list = new ArrayList<>();
 		list.addAll(Arrays.asList("--hostname", "localhost", "--port", String.valueOf(loomOptions().getServer().getGrpcPort())));
@@ -50,7 +52,10 @@ public abstract class AbstractIntegrationTest {
 	}
 
 	protected Loom loomServer() {
-		Loom loom = Loom.create(loomOptions());
+		// TODO randomize config folder to avoid collisions
+		File baseFolder = new File("target", "test-config");
+		LoomOptionsLookup lookup = new LoomOptionsLookup(baseFolder, loomOptions());
+		Loom loom = Loom.create(lookup);
 		return loom;
 	}
 
